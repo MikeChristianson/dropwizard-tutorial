@@ -1,5 +1,7 @@
 package name.christianson.mike;
 
+import com.google.common.base.Optional;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,9 +22,9 @@ public class TimeResource {
     }
 
     @GET
-    public Time getTime(@QueryParam("timezone") String timezone) {
+    public Time getTime(@QueryParam("timezone") Optional<String> timezone) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        TimeZone timeZone = TimeZone.getTimeZone(timezone);
+        TimeZone timeZone = TimeZone.getTimeZone(timezone.or(defaultTimezone));
         formatter.setTimeZone(timeZone);
         String formatted = formatter.format(new Date());
         return new Time(formatted);
